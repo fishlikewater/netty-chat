@@ -2,10 +2,10 @@ package server
 
 interface ChatServer {
 
-    fun start();
+    fun start(port: Int);
 
     fun shotdown();
 
-    fun restart();
+    fun restart(port: Int);
 
 }

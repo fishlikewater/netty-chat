@@ -1,3 +1,5 @@
+package message
+
 import protocol.Proto
 
 interface MessageService {

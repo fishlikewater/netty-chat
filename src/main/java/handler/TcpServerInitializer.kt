@@ -1,9 +1,9 @@
 package handler
 
-import MessageService
 import codec.TcpProtoCodec
 import io.netty.channel.Channel
 import io.netty.channel.ChannelInitializer
+import message.MessageService
 
 class TcpServerInitializer(val messageService: MessageService) : ChannelInitializer<Channel>() {
 

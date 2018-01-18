@@ -1,6 +1,5 @@
 package handler
 
-import MessageService
 import codec.TcpProtoCodec
 import io.netty.channel.ChannelHandler
 import io.netty.channel.ChannelInitializer
@@ -9,6 +8,7 @@ import io.netty.handler.codec.http.HttpObjectAggregator
 import io.netty.handler.codec.http.HttpServerCodec
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler
 import io.netty.handler.stream.ChunkedWriteHandler
+import message.MessageService
 
 @ChannelHandler.Sharable
 class WebSocketServerInitializer(val messageService: MessageService) : ChannelInitializer<NioSocketChannel>() {
