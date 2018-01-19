@@ -12,6 +12,8 @@
         <netty.version>4.1.19.Final</netty.version>
         <slf4j-api.version>1.7.21</slf4j-api.version>
         <slf4j-log4j12.version>1.7.21</slf4j-log4j12.version>
+        <protobuf.version>3.5.1</protobuf.version>
+        <os.detected.classifier>src/main/java</os.detected.classifier>
     </properties>
 
     <dependencies>
@@ -31,7 +33,7 @@
         <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
-            <version>3.0.0</version>
+            <version>${protobuf.version}</version>
         </dependency>
 
         <dependency>
@@ -55,8 +57,34 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.xolstice.maven.plugins</groupId>
+                <artifactId>protobuf-maven-plugin</artifactId>
+                <version>0.5.1</version>
+                <configuration>
+                    <protoSourceRoot>${project.basedir}/proto</protoSourceRoot>
+                    <outputDirectory>${os.detected.classifier}</outputDirectory>
+                    <clearOutputDirectory>false</clearOutputDirectory>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.google.protobuf</groupId>
+                        <artifactId>protobuf-java</artifactId>
+                        <version>${protobuf.version}</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>compile-custom</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
 
     </build>
-    
+
 </project>

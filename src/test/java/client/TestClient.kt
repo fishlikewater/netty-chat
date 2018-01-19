@@ -1,11 +1,14 @@
 package client
 
-import codec.TcpProtoCodec
+import codec.WebSocketProtoCodec
+import com.google.protobuf.ByteString
 import io.netty.bootstrap.Bootstrap
 import io.netty.channel.ChannelInitializer
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioSocketChannel
+import pb.Auth
+import pb.Message
 import protocol.Proto
 
 class TestClient(val host: String,
@@ -23,16 +26,32 @@ class TestClient(val host: String,
                     .handler(object : ChannelInitializer<SocketChannel>() {
                         @Throws(Exception::class)
                         override fun initChannel(ch: SocketChannel) {
-                            ch.pipeline().addLast(TcpProtoCodec())
+                            ch.pipeline().addLast(WebSocketProtoCodec())
                         }
                     })
 
             val f = b.connect(host, port).sync()
+            val authReq = Auth.AuthReq.newBuilder()
+                    .setUid(1)
+                    .setToken("test")
+                    .build()
             var proto = Proto()
             proto.version = 1.toShort()
-            proto.operation = 0
-            proto.body = "aaaa".toByteArray()
+            proto.operation=0
+            proto.body=authReq.toByteArray()
             f.channel().writeAndFlush(proto)
+
+            val msgData = Message.MsgData.newBuilder()
+                    .setTo(1)
+                    .setType(Message.MsgType.SINGLE_TEXT)
+                    .setData(ByteString.copyFromUtf8("TEST"))
+                    .build()
+            proto = Proto()
+            proto.version = 1.toShort()
+            proto.operation = 5
+            proto.body = msgData.toByteArray()
+            f.channel().writeAndFlush(proto)
+
         } finally {
             val shutdownThread = Thread(Runnable { this.shotdown() })
             shutdownThread.name = "shutdown@thread"
@@ -47,5 +66,5 @@ class TestClient(val host: String,
 }
 
 fun main(args: Array<String>) {
-    TestClient("localhost", 9000)
+    TestClient("127.0.0.1", 9000)
 }

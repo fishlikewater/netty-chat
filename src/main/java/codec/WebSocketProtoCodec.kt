@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf
 import io.netty.buffer.ByteBufAllocator
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.MessageToMessageCodec
+import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame
 import org.slf4j.LoggerFactory
 import protocol.Proto
 
@@ -28,7 +29,7 @@ class WebSocketProtoCodec : MessageToMessageCodec<ByteBuf, Proto>() {
             byteBuf.writeInt(proto.operation)
             byteBuf.writeInt(proto.seqId)
         }
-        list.add(byteBuf)
+        list.add(BinaryWebSocketFrame(byteBuf))
 
         logger.debug("encode: {}", proto)
     }

@@ -1,6 +1,6 @@
 package client
 
-import server.TcpChatServer
+import server.WebSocketChatServer
 
 class MyTest {
 
@@ -19,5 +19,5 @@ class MyTest {
 }
 
 fun main(args: Array<String>) {
-    TcpChatServer().start(9000);
+    WebSocketChatServer().start(8090);
 }

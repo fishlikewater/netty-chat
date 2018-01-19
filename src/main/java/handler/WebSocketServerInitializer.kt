@@ -1,6 +1,6 @@
 package handler
 
-import codec.TcpProtoCodec
+import codec.WebSocketProtoCodec
 import io.netty.channel.ChannelHandler
 import io.netty.channel.ChannelInitializer
 import io.netty.channel.socket.nio.NioSocketChannel
@@ -26,7 +26,7 @@ class WebSocketServerInitializer(val messageService: MessageService) : ChannelIn
         // 处理其他的 WebSocketFrame
         pipeline.addLast(WebSocketServerProtocolHandler("/chat"))
         // 处理 TextWebSocketFrame
-        pipeline.addLast(TcpProtoCodec())
+        pipeline.addLast(WebSocketProtoCodec())
         pipeline.addLast(ChatServerHandler(messageService))
     }
 }
